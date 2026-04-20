@@ -1,6 +1,6 @@
+import type { ClientConfig } from "@oopsie-exceptions/core";
 import { describe, expect, it } from "vitest";
 import { extractConfig } from "../config-loader.js";
-import type { ClientConfig } from "@oopsie-exceptions/core";
 
 const sampleConfig: ClientConfig = {
   appName: "Sample",

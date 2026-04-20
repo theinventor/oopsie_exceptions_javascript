@@ -15,7 +15,5 @@ export type OopsieClientConfigModule = OopsieServerConfigModule;
 export function extractConfig(mod: OopsieServerConfigModule): ClientConfig {
   if ("default" in mod && mod.default) return mod.default;
   if ("config" in mod && mod.config) return mod.config;
-  throw new Error(
-    "@oopsie-exceptions/nextjs: config module must export `default` or `config`",
-  );
+  throw new Error("@oopsie-exceptions/nextjs: config module must export `default` or `config`");
 }

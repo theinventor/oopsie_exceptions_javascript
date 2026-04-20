@@ -7,9 +7,7 @@ import type { OopsiePayload, Transport, Webhook } from "@oopsie-exceptions/core"
  * warning rather than a throw (so async delivery logs but doesn't crash).
  */
 export class NodeTransport implements Transport {
-  constructor(
-    private readonly opts: { userAgent?: string; fetchImpl?: typeof fetch } = {},
-  ) {}
+  constructor(private readonly opts: { userAgent?: string; fetchImpl?: typeof fetch } = {}) {}
 
   async send(webhook: Webhook, payload: OopsiePayload, opts: { timeoutMs: number }): Promise<void> {
     const fetchImpl = this.opts.fetchImpl ?? globalThis.fetch;
@@ -33,9 +31,7 @@ export class NodeTransport implements Transport {
       });
 
       if (!response.ok) {
-        throw new Error(
-          `webhook ${webhook.name ?? webhook.url} responded ${response.status}`,
-        );
+        throw new Error(`webhook ${webhook.name ?? webhook.url} responded ${response.status}`);
       }
     } finally {
       clearTimeout(timer);

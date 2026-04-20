@@ -1,5 +1,5 @@
-import { normalizeConfig } from "./config.js";
 import { errorClassName } from "./backtrace.js";
+import { normalizeConfig } from "./config.js";
 import { buildPayload } from "./payload.js";
 import { sendAll } from "./transport.js";
 import type {
@@ -45,12 +45,10 @@ export class OopsieClient {
       }
     }
 
-    const deliver = sendAll(
-      this.config.transport,
-      this.config.webhooks,
-      finalPayload,
-      { timeoutMs: this.config.timeoutMs, logger: this.config.logger },
-    );
+    const deliver = sendAll(this.config.transport, this.config.webhooks, finalPayload, {
+      timeoutMs: this.config.timeoutMs,
+      logger: this.config.logger,
+    });
 
     if (this.config.asyncDelivery) {
       deliver.catch((e) => this.config.logger.error("delivery failed", e));

@@ -1,7 +1,11 @@
 import type { Logger, OopsiePayload, Transport, Webhook } from "./types.js";
 
 export class NoopTransport implements Transport {
-  async send(): Promise<void> {
+  async send(
+    _webhook: Webhook,
+    _payload: OopsiePayload,
+    _opts: { timeoutMs: number },
+  ): Promise<void> {
     // no-op; overridden by runtime packages (@oopsie-exceptions/node, /browser)
   }
 }

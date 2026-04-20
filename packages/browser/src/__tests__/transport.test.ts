@@ -1,7 +1,7 @@
+import type { OopsiePayload, Webhook } from "@oopsie-exceptions/core";
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from "vitest";
 import { BrowserTransport } from "../transport.js";
-import type { OopsiePayload, Webhook } from "@oopsie-exceptions/core";
 
 const payload = (): OopsiePayload => ({
   notifier: "OopsieExceptions",
@@ -41,23 +41,19 @@ describe("BrowserTransport", () => {
   it("passes webhook.headers through (Authorization)", async () => {
     const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(okResponse());
     const t = new BrowserTransport({ fetchImpl });
-    await t.send(
-      { url: "/h", headers: { Authorization: "Bearer x" } },
-      payload(),
-      { timeoutMs: 5000 },
-    );
+    await t.send({ url: "/h", headers: { Authorization: "Bearer x" } }, payload(), {
+      timeoutMs: 5000,
+    });
     const init = fetchImpl.mock.calls[0]?.[1];
     expect((init?.headers as Record<string, string>).Authorization).toBe("Bearer x");
   });
 
   it("throws on non-2xx responses", async () => {
-    const fetchImpl = vi
-      .fn<typeof fetch>()
-      .mockResolvedValue(new Response("bad", { status: 503 }));
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(new Response("bad", { status: 503 }));
     const t = new BrowserTransport({ fetchImpl });
-    await expect(
-      t.send({ url: "/x", name: "h" }, payload(), { timeoutMs: 5000 }),
-    ).rejects.toThrow(/responded 503/);
+    await expect(t.send({ url: "/x", name: "h" }, payload(), { timeoutMs: 5000 })).rejects.toThrow(
+      /responded 503/,
+    );
   });
 
   it("throws if global fetch is unavailable", async () => {
@@ -66,9 +62,9 @@ describe("BrowserTransport", () => {
     globalThis.fetch = undefined;
     try {
       const t = new BrowserTransport();
-      await expect(
-        t.send({ url: "/x" }, payload(), { timeoutMs: 1000 }),
-      ).rejects.toThrow(/fetch unavailable/);
+      await expect(t.send({ url: "/x" }, payload(), { timeoutMs: 1000 })).rejects.toThrow(
+        /fetch unavailable/,
+      );
     } finally {
       globalThis.fetch = original;
     }

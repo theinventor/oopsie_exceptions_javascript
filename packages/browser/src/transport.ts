@@ -13,11 +13,8 @@ export class BrowserTransport implements Transport {
       throw new Error("BrowserTransport: global fetch unavailable");
     }
 
-    const controller =
-      typeof AbortController !== "undefined" ? new AbortController() : null;
-    const timer = controller
-      ? setTimeout(() => controller.abort(), opts.timeoutMs)
-      : null;
+    const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), opts.timeoutMs) : null;
 
     try {
       const init: RequestInit = {
@@ -34,9 +31,7 @@ export class BrowserTransport implements Transport {
       const response = await fetchImpl(webhook.url, init);
 
       if (!response.ok) {
-        throw new Error(
-          `webhook ${webhook.name ?? webhook.url} responded ${response.status}`,
-        );
+        throw new Error(`webhook ${webhook.name ?? webhook.url} responded ${response.status}`);
       }
     } finally {
       if (timer) clearTimeout(timer);

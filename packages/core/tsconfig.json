@@ -3,7 +3,9 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist/esm",
-    "noEmit": true
+    "noEmit": true,
+    "incremental": false,
+    "composite": false
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/**/*.json"]
 }

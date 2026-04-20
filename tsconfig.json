@@ -1,9 +1,7 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./packages/core" },
-    { "path": "./packages/node" },
-    { "path": "./packages/browser" },
-    { "path": "./packages/nextjs" }
-  ]
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["packages/*/src/**/*"]
 }

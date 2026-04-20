@@ -17,9 +17,9 @@ afterEach(() => {
 
 describe("envConfig", () => {
   beforeEach(() => {
-    delete process.env.OOPSIE_WEBHOOK_URL;
-    delete process.env.OOPSIE_TOKEN;
-    delete process.env.OOPSIE_APP_NAME;
+    Reflect.deleteProperty(process.env, "OOPSIE_WEBHOOK_URL");
+    Reflect.deleteProperty(process.env, "OOPSIE_TOKEN");
+    Reflect.deleteProperty(process.env, "OOPSIE_APP_NAME");
   });
 
   it("returns null when OOPSIE_WEBHOOK_URL is not set", () => {
@@ -52,7 +52,7 @@ describe("envConfig", () => {
 
 describe("configureServer / getServerClient", () => {
   beforeEach(() => {
-    delete process.env.OOPSIE_WEBHOOK_URL;
+    Reflect.deleteProperty(process.env, "OOPSIE_WEBHOOK_URL");
   });
 
   it("returns null when no config and no env vars", () => {

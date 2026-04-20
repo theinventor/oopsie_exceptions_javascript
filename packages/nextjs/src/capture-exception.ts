@@ -6,10 +6,7 @@ import { getClientSideClient, getServerClient } from "./singleton.js";
  * runtime (server singleton if running on the server, client-side
  * singleton if in the browser). No-op if neither is initialized.
  */
-export async function captureException(
-  error: unknown,
-  opts: CaptureOptions = {},
-): Promise<void> {
+export async function captureException(error: unknown, opts: CaptureOptions = {}): Promise<void> {
   const isServer = typeof window === "undefined";
   const client = isServer ? getServerClient() : getClientSideClient();
   if (!client) return;

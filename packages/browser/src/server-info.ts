@@ -16,12 +16,12 @@ export function browserServerInfo(): OopsieServerInfo {
     };
   }
   return {
-    hostname: safeHostname(),
+    hostname: safeGet(() => window.location?.hostname),
     pid: null,
     ruby_version: null,
     node_version: null,
     user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
-    url: window.location?.href ?? null,
+    url: safeGet(() => window.location?.href),
     viewport: {
       width: window.innerWidth,
       height: window.innerHeight,
@@ -29,9 +29,9 @@ export function browserServerInfo(): OopsieServerInfo {
   };
 }
 
-function safeHostname(): string | null {
+function safeGet<T>(fn: () => T | undefined): T | null {
   try {
-    return window.location?.hostname ?? null;
+    return fn() ?? null;
   } catch {
     return null;
   }

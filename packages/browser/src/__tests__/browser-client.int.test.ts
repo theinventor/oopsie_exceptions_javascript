@@ -12,9 +12,7 @@ import { BrowserTransport } from "../transport.js";
 
 describe("integration: browser client end-to-end", () => {
   it("POSTs a valid payload on window 'error' event", async () => {
-    const fetchImpl = vi
-      .fn<typeof fetch>()
-      .mockResolvedValue(new Response(null, { status: 200 }));
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(new Response(null, { status: 200 }));
 
     const client = new OopsieClient({
       appName: "BrowserIntegration",

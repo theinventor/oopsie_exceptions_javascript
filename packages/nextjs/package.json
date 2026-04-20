@@ -36,11 +36,7 @@
       "require": "./dist/cjs/global-error.js"
     }
   },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
+  "files": ["dist", "README.md", "LICENSE"],
   "sideEffects": false,
   "engines": {
     "node": ">=20.0.0"

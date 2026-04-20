@@ -23,8 +23,11 @@ function makeClient() {
 // emit with no remaining handlers triggers Node's default abort/print
 // behavior which Vitest captures as a test-runner error even though the
 // assertion passed.
-function getListeners<E extends "uncaughtException" | "unhandledRejection">(event: E) {
-  return process.listeners(event);
+function getListeners(event: "uncaughtException"): NodeJS.UncaughtExceptionListener[];
+function getListeners(event: "unhandledRejection"): NodeJS.UnhandledRejectionListener[];
+function getListeners(event: "uncaughtException" | "unhandledRejection") {
+  if (event === "uncaughtException") return process.listeners("uncaughtException");
+  return process.listeners("unhandledRejection");
 }
 
 const cleanups: (() => void)[] = [];

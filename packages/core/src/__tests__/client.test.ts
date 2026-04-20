@@ -44,7 +44,10 @@ describe("OopsieClient.captureException", () => {
   it("returns immediately when async (does not await delivery)", async () => {
     let resolveDelivery: (() => void) | undefined;
     const transport: Transport = {
-      send: () => new Promise<void>((resolve) => { resolveDelivery = resolve; }),
+      send: () =>
+        new Promise<void>((resolve) => {
+          resolveDelivery = resolve;
+        }),
     };
     const client = new OopsieClient(baseConfig({ transport, asyncDelivery: true }));
     const started = Date.now();
@@ -62,9 +65,7 @@ describe("OopsieClient.captureException", () => {
 
   it("drops errors whose class name matches a string in ignoreErrors", async () => {
     const { transport, calls } = makeRecordingTransport();
-    const client = new OopsieClient(
-      baseConfig({ transport, ignoreErrors: ["AbortError"] }),
-    );
+    const client = new OopsieClient(baseConfig({ transport, ignoreErrors: ["AbortError"] }));
     class AbortError extends Error {
       override name = "AbortError";
     }
@@ -76,9 +77,7 @@ describe("OopsieClient.captureException", () => {
 
   it("drops errors whose class name or message matches a regex", async () => {
     const { transport, calls } = makeRecordingTransport();
-    const client = new OopsieClient(
-      baseConfig({ transport, ignoreErrors: [/not found/i] }),
-    );
+    const client = new OopsieClient(baseConfig({ transport, ignoreErrors: [/not found/i] }));
     await client.captureException(new Error("user not found"));
     await client.captureException(new Error("boom"));
     expect(calls).toHaveLength(1);

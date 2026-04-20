@@ -67,7 +67,9 @@ function toFrame(frame: StackFrameLike): BacktraceFrame {
   return out;
 }
 
-function isErrorLike(v: unknown): v is { message?: unknown; stack?: string; cause?: unknown; name?: string } {
+function isErrorLike(
+  v: unknown,
+): v is { message?: unknown; stack?: string; cause?: unknown; name?: string } {
   return !!v && typeof v === "object";
 }
 

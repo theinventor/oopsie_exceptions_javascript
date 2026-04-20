@@ -2,12 +2,12 @@
  * Integration: Next.js-style onRequestError invocation end-to-end
  * with a mocked HTTP collector (real NodeTransport, real server).
  */
-import { createServer, type Server } from "node:http";
+import { type Server, createServer } from "node:http";
 import type { AddressInfo } from "node:net";
+import { NodeTransport } from "@oopsie-exceptions/node";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { onRequestError } from "../instrumentation.js";
 import { configureServer, resetForTests } from "../singleton.js";
-import { NodeTransport } from "@oopsie-exceptions/node";
 
 let server: Server;
 let port: number;

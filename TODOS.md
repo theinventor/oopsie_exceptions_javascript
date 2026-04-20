@@ -180,13 +180,13 @@ Depends on `node` + `browser`. Single package, multiple entry points via `export
 
 ## Phase 6 — Build & type verification
 
-- [ ] `npm install` at root resolves all workspaces
-- [ ] `npm run typecheck` clean across all packages (strict mode)
-- [ ] `npm run build` produces `dist/esm` + `dist/cjs` + `.d.ts` for all four packages
-- [ ] `npm run test` — all Vitest suites green (unit + integration)
-- [ ] `npm run test -- --coverage` — meets per-package coverage gates (core ≥ 90%, others ≥ 80%)
-- [ ] `npm run lint` / `npm run format` clean via Biome
-- [ ] `npm pack --dry-run` in each package — verify tarball has only `dist/`, `package.json`, `README.md` (no `src/`, tests, tsconfigs)
+- [x] `npm install` at root resolves all workspaces
+- [x] `npm run typecheck` clean across all packages (strict mode)
+- [x] `npm run build` produces `dist/esm` + `dist/cjs` + `.d.ts` for all four packages
+- [x] `npm run test` — all Vitest suites green (unit + integration) — **165 tests across 28 files**
+- [x] `npm run test -- --coverage` — meets per-package coverage gates (core ≥ 90%, others ≥ 80%)
+- [x] `npm run lint` / `npm run format` clean via Biome
+- [x] `npm pack --dry-run` in each package — verify tarball has only `dist/`, `package.json`, `README.md` (no `src/`, tests, tsconfigs) — core 15.4kB, node 6.2kB, browser 4.9kB, nextjs 9.5kB
 
 ---
 

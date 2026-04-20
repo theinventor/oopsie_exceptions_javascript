@@ -1,11 +1,11 @@
 "use client";
 
-import { OopsieClient as CoreOopsieClient, type ClientConfig } from "@oopsie-exceptions/core";
 import {
   BrowserTransport,
   browserServerInfo,
   installGlobalHandlers,
 } from "@oopsie-exceptions/browser";
+import { type ClientConfig, OopsieClient as CoreOopsieClient } from "@oopsie-exceptions/core";
 import { useEffect } from "react";
 import { configureClient } from "./singleton.js";
 
@@ -34,11 +34,13 @@ export function OopsieClient({ config = {} }: OopsieClientProps): null {
       environment: rest.environment ?? "production",
       webhooks: rest.webhooks ?? [
         ...(webhookUrl
-          ? [{
-              url: webhookUrl,
-              headers: token ? { Authorization: `Bearer ${token}` } : {},
-              name: "oopsie",
-            }]
+          ? [
+              {
+                url: webhookUrl,
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+                name: "oopsie",
+              },
+            ]
           : []),
       ],
       transport: rest.transport ?? new BrowserTransport(),

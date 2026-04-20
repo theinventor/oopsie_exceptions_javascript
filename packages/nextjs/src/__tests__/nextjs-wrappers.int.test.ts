@@ -2,7 +2,7 @@
  * Integration: wrapServerAction + wrapRouteHandler both actually POST
  * to a real mock collector via the real NodeTransport.
  */
-import { createServer, type Server } from "node:http";
+import { type Server, createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { NodeTransport } from "@oopsie-exceptions/node";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";

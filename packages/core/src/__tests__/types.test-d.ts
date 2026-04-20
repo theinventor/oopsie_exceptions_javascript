@@ -51,9 +51,7 @@ describe("public types", () => {
   });
 
   it("Transport.send signature is correct", () => {
-    expectTypeOf<Transport["send"]>()
-      .parameter(0)
-      .toEqualTypeOf<Webhook>();
+    expectTypeOf<Transport["send"]>().parameter(0).toEqualTypeOf<Webhook>();
     expectTypeOf<Transport["send"]>().returns.toEqualTypeOf<Promise<void>>();
   });
 });

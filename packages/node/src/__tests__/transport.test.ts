@@ -1,6 +1,6 @@
+import type { OopsiePayload, Webhook } from "@oopsie-exceptions/core";
 import { describe, expect, it, vi } from "vitest";
 import { NodeTransport } from "../transport.js";
-import type { OopsiePayload, Webhook } from "@oopsie-exceptions/core";
 
 const samplePayload = (): OopsiePayload => ({
   notifier: "OopsieExceptions",
@@ -60,9 +60,7 @@ describe("NodeTransport", () => {
   });
 
   it("throws on non-2xx responses", async () => {
-    const fetchImpl = vi
-      .fn<typeof fetch>()
-      .mockResolvedValue(new Response("bad", { status: 500 }));
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(new Response("bad", { status: 500 }));
     const t = new NodeTransport({ fetchImpl });
     await expect(
       t.send({ url: "https://x.com", name: "h" }, samplePayload(), { timeoutMs: 5000 }),

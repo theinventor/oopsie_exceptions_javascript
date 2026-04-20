@@ -87,7 +87,10 @@ export interface ClientConfig {
   packageVersion?: string;
 }
 
-export interface NormalizedConfig extends Required<Omit<ClientConfig, "transport" | "contextStore" | "serverInfo" | "beforeNotify" | "logger">> {
+export interface NormalizedConfig
+  extends Required<
+    Omit<ClientConfig, "transport" | "contextStore" | "serverInfo" | "beforeNotify" | "logger">
+  > {
   transport: Transport;
   contextStore: ContextStore;
   serverInfo: () => OopsieServerInfo;

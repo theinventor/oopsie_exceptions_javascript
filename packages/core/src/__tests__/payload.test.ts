@@ -14,9 +14,7 @@ const cfg = () =>
 describe("buildPayload", () => {
   it("has the same top-level shape as the Ruby fixture", () => {
     const p = buildPayload(new Error("x"), cfg());
-    expect(Object.keys(p).sort()).toEqual(
-      Object.keys(rubyPayload).sort(),
-    );
+    expect(Object.keys(p).sort()).toEqual(Object.keys(rubyPayload).sort());
   });
 
   it("app block matches Ruby shape (name + environment)", () => {

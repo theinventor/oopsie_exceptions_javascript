@@ -3,8 +3,8 @@
  * a real OopsieClient wired with NodeTransport. Verifies end-to-end
  * delivery for the Node runtime package.
  */
-import { createServer, type Server } from "node:http";
-import { AddressInfo } from "node:net";
+import { type Server, createServer } from "node:http";
+import type { AddressInfo } from "node:net";
 import { OopsieClient } from "@oopsie-exceptions/core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { AsyncLocalStorageContextStore } from "../context.js";

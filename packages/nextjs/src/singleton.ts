@@ -1,4 +1,4 @@
-import { OopsieClient, type ClientConfig } from "@oopsie-exceptions/core";
+import { type ClientConfig, OopsieClient } from "@oopsie-exceptions/core";
 import {
   AsyncLocalStorageContextStore,
   NodeTransport,

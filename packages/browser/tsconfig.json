@@ -4,7 +4,9 @@
     "rootDir": "src",
     "outDir": "dist/esm",
     "lib": ["ES2022", "DOM"],
-    "noEmit": true
+    "noEmit": true,
+    "incremental": false,
+    "composite": false
   },
   "include": ["src/**/*"]
 }

@@ -33,4 +33,20 @@ describe("browserServerInfo SSR safety", () => {
       globalThis.window = originalWindow;
     }
   });
+
+  it("returns null hostname when reading window.location throws", () => {
+    const originalLocation = Object.getOwnPropertyDescriptor(window, "location");
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      get() {
+        throw new Error("sandboxed access");
+      },
+    });
+    try {
+      const info = browserServerInfo();
+      expect(info.hostname).toBeNull();
+    } finally {
+      if (originalLocation) Object.defineProperty(window, "location", originalLocation);
+    }
+  });
 });

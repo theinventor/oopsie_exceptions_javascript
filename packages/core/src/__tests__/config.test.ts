@@ -61,4 +61,3 @@ describe("normalizeConfig", () => {
     expect(() => normalizeConfig(null)).toThrow(/config/);
   });
 });
-

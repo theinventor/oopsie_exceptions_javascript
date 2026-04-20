@@ -55,14 +55,14 @@ describe("onRequestError", () => {
       routeType: "route",
     });
     expect(payloads).toHaveLength(1);
-    const p = payloads[0]!;
-    expect(p.error.message).toBe("boom");
-    expect(p.error.handled).toBe(false);
-    const nextjs = p.context.nextjs as Record<string, unknown>;
+    const p = payloads[0];
+    expect(p?.error.message).toBe("boom");
+    expect(p?.error.handled).toBe(false);
+    const nextjs = p?.context.nextjs as Record<string, unknown>;
     expect(nextjs.router).toBe("App Router");
     expect(nextjs.route).toBe("/api/users/[id]");
     expect(nextjs.type).toBe("route");
-    const req = p.context.request as Record<string, unknown>;
+    const req = p?.context.request as Record<string, unknown>;
     expect(req.url).toBe("/api/users/42");
     expect(req.method).toBe("POST");
   });

@@ -5,7 +5,9 @@
     "outDir": "dist/esm",
     "lib": ["ES2022", "DOM"],
     "jsx": "react-jsx",
-    "noEmit": true
+    "noEmit": true,
+    "incremental": false,
+    "composite": false
   },
   "include": ["src/**/*"]
 }
