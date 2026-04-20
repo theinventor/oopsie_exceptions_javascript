@@ -58,17 +58,17 @@ Full task list to build the npm monorepo against `plan.md`. Checkboxes in rough 
 Zero runtime deps. Runtime-agnostic. Drives everything else.
 
 ### Package skeleton
-- [ ] `packages/core/package.json` (name, version `0.1.0`, `exports` map, `main`, `module`, `types`, `publishConfig.access: public`, `sideEffects: false`)
-- [ ] `packages/core/tsconfig.esm.json` → `dist/esm`
-- [ ] `packages/core/tsconfig.cjs.json` → `dist/cjs`
-- [ ] `packages/core/.npmignore`
-- [ ] `packages/core/README.md`
+- [x] `packages/core/package.json` (name, version `0.1.0`, `exports` map, `main`, `module`, `types`, `publishConfig.access: public`, `sideEffects: false`)
+- [x] `packages/core/tsconfig.esm.json` → `dist/esm`
+- [x] `packages/core/tsconfig.cjs.json` → `dist/cjs`
+- [x] `packages/core/.npmignore`
+- [x] `packages/core/README.md`
 
 ### Source files
-- [ ] `src/types.ts` — `OopsiePayload`, `OopsieError`, `OopsieContext`, `Webhook`, `ClientConfig`, `BeforeNotifyHook`, `Plugin`
-- [ ] `src/config.ts` — normalize + validate `ClientConfig`, defaults mirroring Ruby `Configuration`
-- [ ] `src/filters.ts` — param/header filtering (keys + regex), deep redaction with `[FILTERED]` sentinel
-- [ ] `src/backtrace.ts` — wrap `error-stack-parser`, normalize to Ruby-style frames, walk `error.cause` chain
+- [x] `src/types.ts` — `OopsiePayload`, `OopsieError`, `OopsieContext`, `Webhook`, `ClientConfig`, `BeforeNotifyHook`, `Plugin`
+- [x] `src/config.ts` — normalize + validate `ClientConfig`, defaults mirroring Ruby `Configuration`
+- [x] `src/filters.ts` — param/header filtering (keys + regex), deep redaction with `[FILTERED]` sentinel
+- [x] `src/backtrace.ts` — wrap `error-stack-parser`, normalize to Ruby-style frames, walk `error.cause` chain
 - [ ] `src/context.ts` — base `ContextStore` interface + in-memory impl; `setContext` / `mergeContext` / `clear`
 - [ ] `src/transport.ts` — `Transport` interface; `sendAll(webhooks, payload)` fan-out with per-webhook error isolation
 - [ ] `src/payload.ts` — build the top-level JSON object exactly matching `payload.rb` (notifier, version, timestamp, app, error, context, server)
@@ -76,11 +76,11 @@ Zero runtime deps. Runtime-agnostic. Drives everything else.
 - [ ] `src/index.ts` — public re-exports
 
 ### Unit tests (`src/__tests__/`) — one per source file
-- [ ] `fixtures/ruby-payload.json` — canonical Ruby-sourced payload committed as parity reference
+- [x] `fixtures/ruby-payload.json` — canonical Ruby-sourced payload committed as parity reference
 - [ ] `types.test-d.ts` — `expectTypeOf` assertions on the public types
-- [ ] `config.test.ts` — defaults, validation errors, env-var overrides, webhook normalization
-- [ ] `filters.test.ts` — password/token/cookie redaction, regex keys, nested objects, arrays, circular refs
-- [ ] `backtrace.test.ts` — V8 stacks, Firefox stacks, Safari stacks, `error.cause` chains, anonymous frames
+- [x] `config.test.ts` — defaults, validation errors, env-var overrides, webhook normalization
+- [x] `filters.test.ts` — password/token/cookie redaction, regex keys, nested objects, arrays, circular refs
+- [x] `backtrace.test.ts` — V8 stacks, Firefox stacks, Safari stacks, `error.cause` chains, anonymous frames
 - [ ] `context.test.ts` — set/merge/clear semantics match Ruby `Context`; shallow vs deep merge
 - [ ] `transport.test.ts` — `sendAll` fan-out; one webhook failing doesn't block others; timeout propagation
 - [ ] `payload.test.ts` — snapshot against `fixtures/ruby-payload.json` for shared fields, including `ruby_version: null` parity

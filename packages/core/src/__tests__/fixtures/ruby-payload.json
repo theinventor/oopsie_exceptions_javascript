@@ -1,0 +1,63 @@
+{
+  "notifier": "OopsieExceptions",
+  "version": "1.1.0",
+  "timestamp": "2026-04-20T18:30:00.123Z",
+  "app": {
+    "name": "MyApp",
+    "environment": "production"
+  },
+  "error": {
+    "class_name": "ActiveRecord::RecordNotFound",
+    "message": "Couldn't find User with 'id'=999",
+    "backtrace": [
+      "app/controllers/users_controller.rb:14:in `show'",
+      "app/controllers/application_controller.rb:22:in `with_tenant'"
+    ],
+    "first_line": {
+      "file": "app/controllers/users_controller.rb",
+      "line": 14,
+      "method": "show"
+    },
+    "causes": [
+      {
+        "class_name": "ActiveRecord::StatementInvalid",
+        "message": "PG::UndefinedTable: ERROR: relation \"users\" does not exist",
+        "first_line": {
+          "file": "app/models/user.rb",
+          "line": 8,
+          "method": "find"
+        }
+      }
+    ],
+    "handled": false
+  },
+  "context": {
+    "request": {
+      "url": "https://example.com/users/999",
+      "method": "GET",
+      "ip": "203.0.113.42",
+      "user_agent": "Mozilla/5.0",
+      "referer": "https://example.com/",
+      "request_id": "abc-123",
+      "params": {
+        "id": "999",
+        "password": "[FILTERED]"
+      },
+      "headers": {
+        "Host": "example.com",
+        "Accept": "text/html"
+      }
+    },
+    "user": {
+      "id": 42,
+      "email": "jane@example.com"
+    },
+    "action": "users#show"
+  },
+  "server": {
+    "hostname": "web-1",
+    "pid": 12345,
+    "ruby_version": "3.3.0",
+    "rails_version": "7.1.3"
+  }
+}
