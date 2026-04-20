@@ -119,22 +119,22 @@ Zero runtime deps. Runtime-agnostic. Drives everything else.
 ## Phase 4 — `@oopsie-exceptions/browser`
 
 ### Package skeleton
-- [ ] `packages/browser/package.json` (depends on `core`)
-- [ ] tsconfigs + `.npmignore` + `README.md`
+- [x] `packages/browser/package.json` (depends on `core`)
+- [x] tsconfigs + `.npmignore` + `README.md`
 
 ### Source files
-- [ ] `src/transport.ts` — browser `fetch` transport; `keepalive: true` for unload-time delivery
-- [ ] `src/handlers.ts` — `window.onerror`, `window.addEventListener('unhandledrejection')`; install/uninstall
-- [ ] `src/server-info.ts` — userAgent, url, viewport sizing for `server` block (JS-specific additions, keep `hostname` null-safe)
-- [ ] `src/index.ts`
+- [x] `src/transport.ts` — browser `fetch` transport; `keepalive: true` for unload-time delivery
+- [x] `src/handlers.ts` — `window.onerror`, `window.addEventListener('unhandledrejection')`; install/uninstall
+- [x] `src/server-info.ts` — userAgent, url, viewport sizing for `server` block (JS-specific additions, keep `hostname` null-safe)
+- [x] `src/index.ts`
 
 ### Unit tests — one per source file (run under `jsdom` / `happy-dom`)
-- [ ] `transport.test.ts` — mocked fetch; `keepalive` flag set; CORS header handling
-- [ ] `handlers.test.ts` — synthetic `ErrorEvent` + `PromiseRejectionEvent`; dedupe of repeated errors; teardown
-- [ ] `server-info.test.ts` — userAgent, url, viewport captured; SSR-safe when `window` undefined
+- [x] `transport.test.ts` — mocked fetch; `keepalive` flag set; CORS header handling
+- [x] `handlers.test.ts` — synthetic `ErrorEvent` + `PromiseRejectionEvent`; dedupe of repeated errors; teardown
+- [x] `server-info.test.ts` — userAgent, url, viewport captured; SSR-safe when `window` undefined
 
 ### Integration tests
-- [ ] `browser-client.int.test.ts` — full flow: handler installed → `window.dispatchEvent` → POST captured via mocked fetch
+- [x] `browser-client.int.test.ts` — full flow: handler installed → `window.dispatchEvent` → POST captured via mocked fetch
 
 ---
 
