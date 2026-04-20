@@ -33,10 +33,10 @@ Full task list to build the npm monorepo against `plan.md`. Checkboxes in rough 
 
 ## Phase 1 — Root scaffolding
 
-- [ ] `.gitignore` (`node_modules/`, `dist/`, `*.log`, `.DS_Store`, `coverage/`, `.turbo/`, `.env*`)
-- [ ] `.node-version` (pin to Node 22 LTS)
-- [ ] `.npmrc` (`engine-strict=true`, `access=public`)
-- [ ] `.npmignore` template (copied into each package; excludes `src/`, tests, tsconfigs)
+- [x] `.gitignore` (`node_modules/`, `dist/`, `*.log`, `.DS_Store`, `coverage/`, `.turbo/`, `.env*`)
+- [x] `.node-version` (pin to Node 22 LTS)
+- [x] `.npmrc` (`engine-strict=true`, `access=public`)
+- [x] `.npmignore` template (copied into each package; excludes `src/`, tests, tsconfigs) — see `.npmignore.template`
 - [ ] Root `package.json`:
   - [ ] `"private": true`
   - [ ] `"workspaces": ["packages/*"]`

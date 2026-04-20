@@ -1,0 +1,12 @@
+src/
+__tests__/
+*.test.ts
+*.test.tsx
+*.int.test.ts
+*.test-d.ts
+tsconfig*.json
+vitest.config.ts
+biome.json
+coverage/
+.turbo/
+*.tsbuildinfo
