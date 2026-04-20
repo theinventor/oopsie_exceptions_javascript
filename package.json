@@ -8,7 +8,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build -w @oopsie-exceptions/core && npm run build -w @oopsie-exceptions/node -w @oopsie-exceptions/browser && npm run build -w @oopsie-exceptions/nextjs",
     "clean": "npm run clean --workspaces --if-present && rm -rf node_modules",
     "typecheck": "tsc -p packages/core/tsconfig.json --noEmit && tsc -p packages/node/tsconfig.json --noEmit && tsc -p packages/browser/tsconfig.json --noEmit && tsc -p packages/nextjs/tsconfig.json --noEmit",
     "test": "vitest run",
