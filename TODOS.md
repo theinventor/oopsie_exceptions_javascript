@@ -95,24 +95,24 @@ Zero runtime deps. Runtime-agnostic. Drives everything else.
 ## Phase 3 — `@oopsie-exceptions/node`
 
 ### Package skeleton
-- [ ] `packages/node/package.json` (depends on `core`)
-- [ ] tsconfigs + `.npmignore` + `README.md`
+- [x] `packages/node/package.json` (depends on `core`)
+- [x] tsconfigs + `.npmignore` + `README.md`
 
 ### Source files
-- [ ] `src/transport.ts` — `fetch`-based transport with configurable timeout + abort signal
-- [ ] `src/handlers.ts` — `uncaughtException`, `unhandledRejection` wiring; idempotent install/uninstall
-- [ ] `src/context.ts` — `AsyncLocalStorage`-backed context store, overrides core's in-memory default
-- [ ] `src/server-info.ts` — hostname, pid, `process.version` for `server` block
-- [ ] `src/index.ts`
+- [x] `src/transport.ts` — `fetch`-based transport with configurable timeout + abort signal
+- [x] `src/handlers.ts` — `uncaughtException`, `unhandledRejection` wiring; idempotent install/uninstall
+- [x] `src/context.ts` — `AsyncLocalStorage`-backed context store, overrides core's in-memory default
+- [x] `src/server-info.ts` — hostname, pid, `process.version` for `server` block
+- [x] `src/index.ts`
 
 ### Unit tests — one per source file
-- [ ] `transport.test.ts` — real `fetch` mocked; timeout behavior; header passthrough; bearer token interpolation; non-2xx response handling
-- [ ] `handlers.test.ts` — `uncaughtException` + `unhandledRejection` registration + teardown; idempotency; multi-install guard
-- [ ] `context.test.ts` — ALS isolation across concurrent async tasks; `withContext` nesting; leak prevention
-- [ ] `server-info.test.ts` — hostname, pid, `process.version` present; survives missing hostname
+- [x] `transport.test.ts` — real `fetch` mocked; timeout behavior; header passthrough; bearer token interpolation; non-2xx response handling
+- [x] `handlers.test.ts` — `uncaughtException` + `unhandledRejection` registration + teardown; idempotency; multi-install guard
+- [x] `context.test.ts` — ALS isolation across concurrent async tasks; `withContext` nesting; leak prevention
+- [x] `server-info.test.ts` — hostname, pid, `process.version` present; survives missing hostname
 
 ### Integration tests
-- [ ] `node-client.int.test.ts` — full flow: real handlers triggered with synthetic error → POST received by mock HTTP server
+- [x] `node-client.int.test.ts` — full flow: real handlers triggered with synthetic error → POST received by mock HTTP server
 
 ---
 
