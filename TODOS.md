@@ -192,6 +192,8 @@ Depends on `node` + `browser`. Single package, multiple entry points via `export
 
 ## Phase 7 — End-to-end manual verification (the important one)
 
+> **Deferred** — user chose to skip on 2026-04-20 and proceed to Phase 8. Resume here when ready to actually hit the local Oopsie collector.
+
 - [ ] Scaffold throwaway app: `npx create-next-app@latest test-oopsie --app --typescript`
 - [ ] `npm install /Users/troy/projects/oopsie_exceptions_javascript/packages/nextjs` (file link) + transitive workspace deps
 - [ ] Wire `instrumentation.ts` (`register` + `onRequestError`)
@@ -209,11 +211,11 @@ Depends on `node` + `browser`. Single package, multiple entry points via `export
 
 ## Phase 8 — Docs & release-readiness (no publish yet)
 
-- [ ] Root `README.md` final polish: install, quickstart, Next.js setup, config table, Ruby/JS parity note
-- [ ] Per-package `README.md` stubs with minimal usage
-- [ ] `CHANGELOG.md` filled in with concrete v0.1.0 entries
-- [ ] Add `CONTRIBUTING.md` (optional, dev setup notes)
-- [ ] Verify `LICENSE` copyright holder matches gem
+- [x] Root `README.md` final polish: install, quickstart, Next.js setup, config table, Ruby/JS parity note
+- [x] Per-package `README.md` stubs with minimal usage
+- [x] `CHANGELOG.md` filled in with concrete v0.1.0 entries
+- [x] Add `CONTRIBUTING.md` (optional, dev setup notes)
+- [x] Verify `LICENSE` copyright holder matches gem — MIT, `Troy Anderson`
 
 ---
 

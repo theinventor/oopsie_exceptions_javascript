@@ -104,6 +104,35 @@ Matches the Ruby gem for shared fields so the same collector accepts both:
 
 `ruby_version` is kept (null for JS) so dashboards built against the Ruby payload keep working.
 
+## Config options
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `appName` | — (required) | Identifier sent in every payload. |
+| `environment` | — (required) | Environment label (`production`, `staging`, etc.). |
+| `webhooks` | — (required) | `Array<{ url, headers?, name? }>` — fan-out target list. |
+| `enabled` | `true` | Master kill switch. |
+| `asyncDelivery` | `true` | Fire-and-forget delivery. Set `false` to `await` transport. |
+| `timeoutMs` | `10000` | HTTP timeout via AbortSignal. |
+| `filterParameters` | `["password", "password_confirmation", "secret", "token", "api_key"]` | Keys (strings or RegExp) to redact in `context`. |
+| `filterHeaders` | `["authorization", "cookie", "set-cookie"]` | Full header names to strip (case-insensitive). |
+| `ignoreErrors` | `[]` | `(string | RegExp | (err) => boolean)[]` — matchers that drop errors silently. |
+| `beforeNotify` | `null` | `(payload) => payload | null`. Return `null` to drop. Sync or async. |
+| `transport` | `NoopTransport` | Supply `NodeTransport` / `BrowserTransport`. |
+| `contextStore` | `InMemoryContextStore` | Swap in `AsyncLocalStorageContextStore` on servers. |
+| `serverInfo` | `() => { hostname: null, pid: null, ruby_version: null }` | Function producing the `server` block. |
+| `captureRequestBody` | `false` | Include first 10KB of JSON request bodies (mirrors Ruby). |
+
+## Ruby/JS parity
+
+The webhook payload shape is **frozen** across both implementations so one Oopsie collector can ingest errors from any mix of runtimes:
+
+- Shared top-level keys: `notifier`, `version`, `timestamp`, `app`, `error`, `context`, `server`.
+- `error` subfields (`class_name`, `message`, `backtrace`, `first_line`, `causes`, `handled`) match one-for-one.
+- `server.ruby_version` is always present — Ruby fills it, JS pins it to `null`. JS adds `node_version` (and `user_agent`, `url`, `viewport` in the browser) alongside.
+- Parameter + header filtering semantics match (substring-include for strings, RegExp for patterns).
+- `error.cause` chain walked to a max depth of 10, cause messages truncated to 1000 chars.
+
 ## Development
 
 ```bash
