@@ -1,0 +1,64 @@
+{
+  "name": "@oopsie-exceptions/nextjs",
+  "version": "0.1.0",
+  "description": "Next.js App Router bindings for @oopsie-exceptions: instrumentation hooks, client component, GlobalErrorReporter, server-action and route-handler wrappers.",
+  "keywords": ["oopsie", "exceptions", "error-tracking", "nextjs", "webhook"],
+  "license": "MIT",
+  "author": "Troy Anderson",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theinventor/oopsie_exceptions_javascript.git",
+    "directory": "packages/nextjs"
+  },
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./instrumentation": {
+      "types": "./dist/esm/instrumentation.d.ts",
+      "import": "./dist/esm/instrumentation.js",
+      "require": "./dist/cjs/instrumentation.js"
+    },
+    "./client": {
+      "types": "./dist/esm/client.d.ts",
+      "import": "./dist/esm/client.js",
+      "require": "./dist/cjs/client.js"
+    },
+    "./global-error": {
+      "types": "./dist/esm/global-error.d.ts",
+      "import": "./dist/esm/global-error.js",
+      "require": "./dist/cjs/global-error.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && node ../../scripts/fixup-cjs.mjs dist/cjs",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@oopsie-exceptions/browser": "0.1.0",
+    "@oopsie-exceptions/core": "0.1.0",
+    "@oopsie-exceptions/node": "0.1.0"
+  },
+  "peerDependencies": {
+    "next": ">=15.0.0",
+    "react": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

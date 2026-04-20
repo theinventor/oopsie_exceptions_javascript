@@ -143,38 +143,38 @@ Zero runtime deps. Runtime-agnostic. Drives everything else.
 Depends on `node` + `browser`. Single package, multiple entry points via `exports` subpaths.
 
 ### Package skeleton
-- [ ] `packages/nextjs/package.json` with subpath exports:
-  - [ ] `.` (main; re-exports `captureException`, types)
-  - [ ] `./instrumentation` (server init + `onRequestError`)
-  - [ ] `./client` (React client component)
-  - [ ] `./global-error` (`GlobalErrorReporter`)
-- [ ] `peerDependencies`: `next >= 15`, `react >= 18`
-- [ ] tsconfigs + `.npmignore` + `README.md`
+- [x] `packages/nextjs/package.json` with subpath exports:
+  - [x] `.` (main; re-exports `captureException`, types)
+  - [x] `./instrumentation` (server init + `onRequestError`)
+  - [x] `./client` (React client component)
+  - [x] `./global-error` (`GlobalErrorReporter`)
+- [x] `peerDependencies`: `next >= 15`, `react >= 18`
+- [x] tsconfigs + `.npmignore` + `README.md`
 
 ### Source files
-- [ ] `src/singleton.ts` — lazy-constructed shared `OopsieClient`; env-var bootstrap (`OOPSIE_WEBHOOK_URL`, `OOPSIE_TOKEN`, `OOPSIE_APP_NAME`)
-- [ ] `src/instrumentation.ts` — exports `register()` + `onRequestError(err, req, ctx)` → `client.captureException`
-- [ ] `src/client.tsx` — `<OopsieClient />` mount component; registers browser handlers; exposes `captureException` via context
-- [ ] `src/global-error.tsx` — `GlobalErrorReporter` component that reports then renders fallback
-- [ ] `src/wrap-server-action.ts` — `wrapServerAction(fn)` try/catch that captures then rethrows
-- [ ] `src/wrap-route-handler.ts` — `wrapRouteHandler(handler)` same pattern for Route Handlers
-- [ ] `src/capture-exception.ts` — thin re-export bound to singleton
-- [ ] `src/config-loader.ts` — optional `oopsie.server.config.ts` / `oopsie.client.config.ts` loader
-- [ ] `src/index.ts`
+- [x] `src/singleton.ts` — lazy-constructed shared `OopsieClient`; env-var bootstrap (`OOPSIE_WEBHOOK_URL`, `OOPSIE_TOKEN`, `OOPSIE_APP_NAME`)
+- [x] `src/instrumentation.ts` — exports `register()` + `onRequestError(err, req, ctx)` → `client.captureException`
+- [x] `src/client.tsx` — `<OopsieClient />` mount component; registers browser handlers; exposes `captureException` via context
+- [x] `src/global-error.tsx` — `GlobalErrorReporter` component that reports then renders fallback
+- [x] `src/wrap-server-action.ts` — `wrapServerAction(fn)` try/catch that captures then rethrows
+- [x] `src/wrap-route-handler.ts` — `wrapRouteHandler(handler)` same pattern for Route Handlers
+- [x] `src/capture-exception.ts` — thin re-export bound to singleton
+- [x] `src/config-loader.ts` — optional `oopsie.server.config.ts` / `oopsie.client.config.ts` loader
+- [x] `src/index.ts`
 
 ### Unit tests — one per source file
-- [ ] `singleton.test.ts` — env-var bootstrap, idempotent init, reset between tests
-- [ ] `instrumentation.test.ts` — `onRequestError` payload shape for RSC / Route Handler / Server Action / middleware `context.routerKind`
-- [ ] `client.test.tsx` — `<OopsieClient />` mounts, installs browser handlers, unmounts cleanly (react testing library)
-- [ ] `global-error.test.tsx` — `GlobalErrorReporter` reports on mount exactly once, renders fallback, passes `reset` through
-- [ ] `wrap-server-action.test.ts` — captures + rethrows; preserves return value on success; passes args through
-- [ ] `wrap-route-handler.test.ts` — same contract as server-action wrapper; `Request` / `Response` passthrough
-- [ ] `capture-exception.test.ts` — routes to singleton; no-op when client not initialized
-- [ ] `config-loader.test.ts` — loads `oopsie.server.config.ts` / `oopsie.client.config.ts` when present; falls back to env vars
+- [x] `singleton.test.ts` — env-var bootstrap, idempotent init, reset between tests
+- [x] `instrumentation.test.ts` — `onRequestError` payload shape for RSC / Route Handler / Server Action / middleware `context.routerKind`
+- [x] `client.test.tsx` — `<OopsieClient />` mounts, installs browser handlers, unmounts cleanly (react testing library)
+- [x] `global-error.test.tsx` — `GlobalErrorReporter` reports on mount exactly once, renders fallback, passes `reset` through
+- [x] `wrap-server-action.test.ts` — captures + rethrows; preserves return value on success; passes args through
+- [x] `wrap-route-handler.test.ts` — same contract as server-action wrapper; `Request` / `Response` passthrough
+- [x] `capture-exception.test.ts` — routes to singleton; no-op when client not initialized
+- [x] `config-loader.test.ts` — loads `oopsie.server.config.ts` / `oopsie.client.config.ts` when present; falls back to env vars
 
 ### Integration tests
-- [ ] `nextjs-instrumentation.int.test.ts` — simulate Next.js `onRequestError` invocation end-to-end with mocked collector
-- [ ] `nextjs-wrappers.int.test.ts` — `wrapServerAction` + `wrapRouteHandler` actually POST to mocked collector
+- [x] `nextjs-instrumentation.int.test.ts` — simulate Next.js `onRequestError` invocation end-to-end with mocked collector
+- [x] `nextjs-wrappers.int.test.ts` — `wrapServerAction` + `wrapRouteHandler` actually POST to mocked collector
 
 ---
 
