@@ -1,13 +1,6 @@
-import type {
-  ClientConfig,
-  ContextStore,
-  Logger,
-  NormalizedConfig,
-  OopsieContext,
-  OopsieServerInfo,
-  Transport,
-  Webhook,
-} from "./types.js";
+import { InMemoryContextStore } from "./context.js";
+import { NoopTransport } from "./transport.js";
+import type { ClientConfig, Logger, NormalizedConfig, OopsieServerInfo, Webhook } from "./types.js";
 
 export const DEFAULT_FILTER_PARAMETERS: (string | RegExp)[] = [
   "password",
@@ -22,42 +15,6 @@ export const DEFAULT_FILTER_HEADERS: (string | RegExp)[] = [
   "cookie",
   "set-cookie",
 ];
-
-class InMemoryContextStore implements ContextStore {
-  private ctx: OopsieContext = {};
-
-  get(): OopsieContext {
-    return this.ctx;
-  }
-
-  set(ctx: OopsieContext): void {
-    this.ctx = ctx;
-  }
-
-  merge(ctx: OopsieContext): void {
-    this.ctx = { ...this.ctx, ...ctx };
-  }
-
-  clear(): void {
-    this.ctx = {};
-  }
-
-  async withContext<T>(ctx: OopsieContext, fn: () => T | Promise<T>): Promise<T> {
-    const prev = this.ctx;
-    this.ctx = { ...prev, ...ctx };
-    try {
-      return await fn();
-    } finally {
-      this.ctx = prev;
-    }
-  }
-}
-
-class NoopTransport implements Transport {
-  async send(): Promise<void> {
-    // no-op; overridden by runtime packages
-  }
-}
 
 const defaultLogger: Logger = {
   warn: (msg, meta) => {
@@ -122,4 +79,4 @@ export function normalizeConfig(raw: ClientConfig): NormalizedConfig {
   };
 }
 
-export { InMemoryContextStore, NoopTransport, defaultLogger, defaultServerInfo };
+export { defaultLogger, defaultServerInfo };

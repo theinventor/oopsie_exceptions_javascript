@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  DEFAULT_FILTER_HEADERS,
-  DEFAULT_FILTER_PARAMETERS,
-  InMemoryContextStore,
-  normalizeConfig,
-} from "../config.js";
+import { DEFAULT_FILTER_HEADERS, DEFAULT_FILTER_PARAMETERS, normalizeConfig } from "../config.js";
 
 describe("normalizeConfig", () => {
   const baseConfig = {
@@ -67,45 +62,3 @@ describe("normalizeConfig", () => {
   });
 });
 
-describe("InMemoryContextStore", () => {
-  it("starts empty", () => {
-    const s = new InMemoryContextStore();
-    expect(s.get()).toEqual({});
-  });
-
-  it("merges into existing context", () => {
-    const s = new InMemoryContextStore();
-    s.set({ a: 1 });
-    s.merge({ b: 2 });
-    expect(s.get()).toEqual({ a: 1, b: 2 });
-  });
-
-  it("clear resets to empty", () => {
-    const s = new InMemoryContextStore();
-    s.set({ a: 1 });
-    s.clear();
-    expect(s.get()).toEqual({});
-  });
-
-  it("withContext scopes and restores on success", async () => {
-    const s = new InMemoryContextStore();
-    s.set({ outer: 1 });
-    const result = await s.withContext({ inner: 2 }, () => {
-      expect(s.get()).toEqual({ outer: 1, inner: 2 });
-      return "ok";
-    });
-    expect(result).toBe("ok");
-    expect(s.get()).toEqual({ outer: 1 });
-  });
-
-  it("withContext restores even if fn throws", async () => {
-    const s = new InMemoryContextStore();
-    s.set({ outer: 1 });
-    await expect(
-      s.withContext({ inner: 2 }, () => {
-        throw new Error("boom");
-      }),
-    ).rejects.toThrow("boom");
-    expect(s.get()).toEqual({ outer: 1 });
-  });
-});

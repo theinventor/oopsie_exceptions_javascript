@@ -69,26 +69,26 @@ Zero runtime deps. Runtime-agnostic. Drives everything else.
 - [x] `src/config.ts` — normalize + validate `ClientConfig`, defaults mirroring Ruby `Configuration`
 - [x] `src/filters.ts` — param/header filtering (keys + regex), deep redaction with `[FILTERED]` sentinel
 - [x] `src/backtrace.ts` — wrap `error-stack-parser`, normalize to Ruby-style frames, walk `error.cause` chain
-- [ ] `src/context.ts` — base `ContextStore` interface + in-memory impl; `setContext` / `mergeContext` / `clear`
-- [ ] `src/transport.ts` — `Transport` interface; `sendAll(webhooks, payload)` fan-out with per-webhook error isolation
-- [ ] `src/payload.ts` — build the top-level JSON object exactly matching `payload.rb` (notifier, version, timestamp, app, error, context, server)
-- [ ] `src/client.ts` — `OopsieClient`: `captureException`, `setContext`, `withContext`, `use(plugin)`, `ignoreErrors` check, `beforeNotify` pipeline, `asyncDelivery` semantics
-- [ ] `src/index.ts` — public re-exports
+- [x] `src/context.ts` — base `ContextStore` interface + in-memory impl; `setContext` / `mergeContext` / `clear`
+- [x] `src/transport.ts` — `Transport` interface; `sendAll(webhooks, payload)` fan-out with per-webhook error isolation
+- [x] `src/payload.ts` — build the top-level JSON object exactly matching `payload.rb` (notifier, version, timestamp, app, error, context, server)
+- [x] `src/client.ts` — `OopsieClient`: `captureException`, `setContext`, `withContext`, `use(plugin)`, `ignoreErrors` check, `beforeNotify` pipeline, `asyncDelivery` semantics
+- [x] `src/index.ts` — public re-exports
 
 ### Unit tests (`src/__tests__/`) — one per source file
 - [x] `fixtures/ruby-payload.json` — canonical Ruby-sourced payload committed as parity reference
-- [ ] `types.test-d.ts` — `expectTypeOf` assertions on the public types
+- [x] `types.test-d.ts` — `expectTypeOf` assertions on the public types
 - [x] `config.test.ts` — defaults, validation errors, env-var overrides, webhook normalization
 - [x] `filters.test.ts` — password/token/cookie redaction, regex keys, nested objects, arrays, circular refs
 - [x] `backtrace.test.ts` — V8 stacks, Firefox stacks, Safari stacks, `error.cause` chains, anonymous frames
-- [ ] `context.test.ts` — set/merge/clear semantics match Ruby `Context`; shallow vs deep merge
-- [ ] `transport.test.ts` — `sendAll` fan-out; one webhook failing doesn't block others; timeout propagation
-- [ ] `payload.test.ts` — snapshot against `fixtures/ruby-payload.json` for shared fields, including `ruby_version: null` parity
-- [ ] `client.test.ts` — `captureException`, `ignoreErrors` string + regex, `beforeNotify` drop via `null`, `setContext`, `withContext` scoping, `use(plugin)`, async vs sync delivery, `enabled: false` no-op
+- [x] `context.test.ts` — set/merge/clear semantics match Ruby `Context`; shallow vs deep merge
+- [x] `transport.test.ts` — `sendAll` fan-out; one webhook failing doesn't block others; timeout propagation
+- [x] `payload.test.ts` — snapshot against `fixtures/ruby-payload.json` for shared fields, including `ruby_version: null` parity
+- [x] `client.test.ts` — `captureException`, `ignoreErrors` string + regex, `beforeNotify` drop via `null`, `setContext`, `withContext` scoping, `use(plugin)`, async vs sync delivery, `enabled: false` no-op
 
 ### Integration tests
-- [ ] `client-transport.int.test.ts` — full pipeline: `captureException` → payload build → filters → fan-out, with mocked `fetch`
-- [ ] `context-propagation.int.test.ts` — `withContext` propagates correctly across nested async boundaries
+- [x] `client-transport.int.test.ts` — full pipeline: `captureException` → payload build → filters → fan-out, with mocked `fetch`
+- [x] `context-propagation.int.test.ts` — `withContext` propagates correctly across nested async boundaries
 
 ---
 

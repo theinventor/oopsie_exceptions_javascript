@@ -17,8 +17,9 @@ export function backtraceLines(error: unknown): string[] | null {
 export function firstLine(error: unknown): BacktraceFrame | null {
   if (!isErrorLike(error)) return null;
   const frames = safeParse(error);
-  if (!frames || frames.length === 0) return null;
-  return toFrame(frames[0]);
+  const head = frames?.[0];
+  if (!head) return null;
+  return toFrame(head);
 }
 
 export function collectCauses(error: unknown): ErrorCause[] {
