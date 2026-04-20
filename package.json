@@ -1,0 +1,35 @@
+{
+  "name": "oopsie-exceptions-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Root of the @oopsie-exceptions/* npm monorepo — JS port of the oopsie_exceptions Ruby gem.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present && rm -rf node_modules",
+    "typecheck": "tsc --build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "biome check .",
+    "format": "biome format --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theinventor/oopsie_exceptions_javascript.git"
+  },
+  "author": "Troy Anderson",
+  "license": "MIT"
+}

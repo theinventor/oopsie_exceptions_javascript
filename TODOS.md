@@ -37,16 +37,16 @@ Full task list to build the npm monorepo against `plan.md`. Checkboxes in rough 
 - [x] `.node-version` (pin to Node 22 LTS)
 - [x] `.npmrc` (`engine-strict=true`, `access=public`)
 - [x] `.npmignore` template (copied into each package; excludes `src/`, tests, tsconfigs) — see `.npmignore.template`
-- [ ] Root `package.json`:
-  - [ ] `"private": true`
-  - [ ] `"workspaces": ["packages/*"]`
-  - [ ] scripts: `build`, `test`, `typecheck`, `lint`, `format`, `clean`, `release`
-  - [ ] devDeps: `typescript`, `vitest`, `@biomejs/biome`, `@types/node`
-- [ ] `tsconfig.base.json` — strict, ES2022, module `NodeNext`, declarations on, source maps, `composite: true`
-- [ ] `tsconfig.json` — project references to all four packages
-- [ ] `biome.json` — formatter + linter config
-- [ ] `vitest.config.ts` — workspace-aware, coverage with v8
-- [ ] `LICENSE` (MIT, matching Ruby gem author — may already exist on remote)
+- [x] Root `package.json`:
+  - [x] `"private": true`
+  - [x] `"workspaces": ["packages/*"]`
+  - [x] scripts: `build`, `test`, `typecheck`, `lint`, `format`, `clean`, `release`
+  - [x] devDeps: `typescript`, `vitest`, `@biomejs/biome`, `@types/node`
+- [x] `tsconfig.base.json` — strict, ES2022, module `NodeNext`, declarations on, source maps, `composite: true`
+- [x] `tsconfig.json` — project references to all four packages
+- [x] `biome.json` — formatter + linter config
+- [x] `vitest.config.ts` — workspace-aware, coverage with v8
+- [x] `LICENSE` (MIT, matching Ruby gem author — may already exist on remote)
 - [ ] `README.md` — port structure from Ruby gem README, swap examples for JS/Next.js
 - [ ] `CHANGELOG.md` — seed with `## [0.1.0] - unreleased`
 - [ ] `.github/workflows/ci.yml` — matrix: Node 20 + 22; steps: install, lint, typecheck, test, build, pack dry-run
