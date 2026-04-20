@@ -20,14 +20,14 @@ Full task list to build the npm monorepo against `plan.md`. Checkboxes in rough 
 
 ## Phase 0 — Git & working tree bootstrap
 
-- [ ] Reconcile local `main` with `origin/main` (pull the existing `LICENSE` commit)
-- [ ] Read Ruby gem reference files once, keep open for parity cross-checks:
-  - [ ] `/Users/troy/projects/oopsie_exceptions/lib/oopsie_exceptions/payload.rb`
-  - [ ] `/Users/troy/projects/oopsie_exceptions/lib/oopsie_exceptions/configuration.rb`
-  - [ ] `/Users/troy/projects/oopsie_exceptions/lib/oopsie_exceptions/webhook_client.rb`
-  - [ ] `/Users/troy/projects/oopsie_exceptions/lib/oopsie_exceptions/context.rb`
-  - [ ] `/Users/troy/projects/oopsie_exceptions/README.md`
-- [ ] Capture a real Ruby-sourced payload JSON fixture (for snapshot parity tests)
+- [x] Reconcile local `main` with `origin/main` (pull the existing `LICENSE` commit)
+- [x] Read Ruby gem reference files once, keep open for parity cross-checks:
+  - [x] `/Users/troy/projects/oopsie_exceptions/lib/oopsie_exceptions/payload.rb`
+  - [x] `/Users/troy/projects/oopsie_exceptions/lib/oopsie_exceptions/configuration.rb`
+  - [x] `/Users/troy/projects/oopsie_exceptions/lib/oopsie_exceptions/webhook_client.rb`
+  - [x] `/Users/troy/projects/oopsie_exceptions/lib/oopsie_exceptions/context.rb`
+  - [x] `/Users/troy/projects/oopsie_exceptions/README.md`
+- [x] Capture a real Ruby-sourced payload JSON fixture (for snapshot parity tests) — see `reference/ruby-payload.json`
 
 ---
 
