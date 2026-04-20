@@ -1,8 +1,14 @@
 {
   "name": "@oopsie-exceptions/node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Node runtime for @oopsie-exceptions: fetch transport, uncaughtException/unhandledRejection handlers, AsyncLocalStorage context.",
-  "keywords": ["oopsie", "exceptions", "error-tracking", "webhook", "node"],
+  "keywords": [
+    "oopsie",
+    "exceptions",
+    "error-tracking",
+    "webhook",
+    "node"
+  ],
   "license": "MIT",
   "author": "Troy Anderson",
   "repository": {
@@ -21,7 +27,11 @@
       "require": "./dist/cjs/index.js"
     }
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
   "engines": {
     "node": ">=20.0.0"
@@ -31,7 +41,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@oopsie-exceptions/core": "0.1.0"
+    "@oopsie-exceptions/core": "0.1.1"
   },
   "publishConfig": {
     "access": "public"

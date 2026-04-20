@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - unreleased
+
+### Fixed
+- **Edge-runtime compile error** in `@oopsie-exceptions/node`. `server-info.ts` imported `node:os` at the top level, which broke Next.js Edge-runtime compilation of `instrumentation.ts` with `Failed to load external module node:os`. Hostname resolution now uses a runtime-computed dynamic import so bundlers can't follow it statically; in Edge, the import fails silently and `hostname` degrades to `null`. Node runtime behaviour unchanged.
+
 ## [0.1.0] - unreleased
 
 First release. JavaScript/Next.js port of the [`oopsie_exceptions`](https://github.com/theinventor/oopsie_exceptions) Ruby gem. The webhook payload shape matches the Ruby gem exactly on shared fields so a single Oopsie collector can receive exceptions from both runtimes.
