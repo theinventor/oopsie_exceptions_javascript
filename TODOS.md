@@ -47,9 +47,9 @@ Full task list to build the npm monorepo against `plan.md`. Checkboxes in rough 
 - [x] `biome.json` — formatter + linter config
 - [x] `vitest.config.ts` — workspace-aware, coverage with v8
 - [x] `LICENSE` (MIT, matching Ruby gem author — may already exist on remote)
-- [ ] `README.md` — port structure from Ruby gem README, swap examples for JS/Next.js
-- [ ] `CHANGELOG.md` — seed with `## [0.1.0] - unreleased`
-- [ ] `.github/workflows/ci.yml` — matrix: Node 20 + 22; steps: install, lint, typecheck, test, build, pack dry-run
+- [x] `README.md` — port structure from Ruby gem README, swap examples for JS/Next.js
+- [x] `CHANGELOG.md` — seed with `## [0.1.0] - unreleased`
+- [x] `.github/workflows/ci.yml` — matrix: Node 20 + 22; steps: install, lint, typecheck, test, build, pack dry-run
 
 ---
 
