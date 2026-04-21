@@ -1,6 +1,6 @@
 import type { OopsiePayload, Transport } from "@oopsie-exceptions/core";
 import { afterEach, describe, expect, it } from "vitest";
-import { onRequestError, register } from "../instrumentation.js";
+import { onRequestError } from "../instrumentation.js";
 import { configureServer, resetForTests } from "../singleton-server.js";
 
 const payloads: OopsiePayload[] = [];
@@ -24,12 +24,6 @@ function installClient() {
     asyncDelivery: false,
   });
 }
-
-describe("register", () => {
-  it("is a no-op when no env vars are set and no client was configured first", () => {
-    expect(() => register()).not.toThrow();
-  });
-});
 
 describe("onRequestError", () => {
   const fakeRequest = {

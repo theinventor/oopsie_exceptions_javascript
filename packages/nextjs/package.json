@@ -1,14 +1,8 @@
 {
   "name": "@oopsie-exceptions/nextjs",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Next.js App Router bindings for @oopsie-exceptions: instrumentation hooks, client component, GlobalErrorReporter, server-action and route-handler wrappers.",
-  "keywords": [
-    "oopsie",
-    "exceptions",
-    "error-tracking",
-    "nextjs",
-    "webhook"
-  ],
+  "keywords": ["oopsie", "exceptions", "error-tracking", "nextjs", "webhook"],
   "license": "MIT",
   "author": "Troy Anderson",
   "repository": {
@@ -42,11 +36,7 @@
       "require": "./dist/cjs/global-error.js"
     }
   },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
+  "files": ["dist", "README.md", "LICENSE"],
   "sideEffects": false,
   "engines": {
     "node": ">=20.0.0"
@@ -56,9 +46,9 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@oopsie-exceptions/browser": "0.1.3",
-    "@oopsie-exceptions/core": "0.1.3",
-    "@oopsie-exceptions/node": "0.1.3"
+    "@oopsie-exceptions/browser": "0.1.4",
+    "@oopsie-exceptions/core": "0.1.4",
+    "@oopsie-exceptions/node": "0.1.4"
   },
   "peerDependencies": {
     "next": ">=15.0.0",

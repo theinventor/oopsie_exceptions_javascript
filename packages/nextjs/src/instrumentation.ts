@@ -1,31 +1,17 @@
 import type { CaptureOptions } from "@oopsie-exceptions/core";
 import { configureServer, getServerClient } from "./singleton-server.js";
 
-export { configureServer, getServerClient, envConfig } from "./singleton-server.js";
+export { configureServer, getServerClient } from "./singleton-server.js";
 
 /**
  * Server-side manual capture. For client components import
  * `captureException` from `@oopsie-exceptions/nextjs` instead — that
- * one is browser-safe and won't pull node:* into your client bundle.
+ * one is browser-safe and won't pull `node:*` into your client bundle.
  */
 export async function captureException(error: unknown, opts: CaptureOptions = {}): Promise<void> {
   const client = getServerClient();
   if (!client) return;
   return client.captureException(error, opts);
-}
-
-/**
- * Re-export with the exact names Next.js 15 expects when a user writes:
- *
- *   // instrumentation.ts
- *   export { register, onRequestError } from "@oopsie-exceptions/nextjs/instrumentation";
- *
- * `register()` is called once at boot. `onRequestError` is called on
- * every server-side error that Next.js catches (RSC, Route Handler,
- * Server Action, Middleware).
- */
-export function register(): void {
-  configureServer();
 }
 
 interface RequestErrorContext {
@@ -44,8 +30,9 @@ interface RequestErrorRequest {
 
 /**
  * Next.js calls this with (err, request, context) whenever a server-
- * side error leaks. We forward it into the singleton client with the
- * route info attached as extra context.
+ * side error leaks. Forwards to the server singleton (set up in
+ * `instrumentation.ts#register()` via `configureServer(config)`).
+ * No-op if no config was registered.
  */
 export async function onRequestError(
   err: unknown,

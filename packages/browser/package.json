@@ -1,14 +1,8 @@
 {
   "name": "@oopsie-exceptions/browser",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Browser runtime for @oopsie-exceptions: fetch (keepalive) transport, window.onerror + unhandledrejection handlers.",
-  "keywords": [
-    "oopsie",
-    "exceptions",
-    "error-tracking",
-    "webhook",
-    "browser"
-  ],
+  "keywords": ["oopsie", "exceptions", "error-tracking", "webhook", "browser"],
   "license": "MIT",
   "author": "Troy Anderson",
   "repository": {
@@ -27,11 +21,7 @@
       "require": "./dist/cjs/index.js"
     }
   },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
+  "files": ["dist", "README.md", "LICENSE"],
   "sideEffects": false,
   "engines": {
     "node": ">=20.0.0"
@@ -41,7 +31,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@oopsie-exceptions/core": "0.1.3"
+    "@oopsie-exceptions/core": "0.1.4"
   },
   "publishConfig": {
     "access": "public"

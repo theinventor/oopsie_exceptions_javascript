@@ -1,6 +1,7 @@
 // Browser-safe re-exports only. Server-side helpers (configureServer,
-// getServerClient, envConfig) live on the /instrumentation subpath to
-// keep node:os / node:async_hooks out of the client bundle.
+// getServerClient, onRequestError, server captureException) live on
+// the /instrumentation subpath to keep node:async_hooks out of the
+// client bundle.
 export { captureException } from "./capture-exception.js";
 export { wrapServerAction } from "./wrap-server-action.js";
 export { wrapRouteHandler } from "./wrap-route-handler.js";

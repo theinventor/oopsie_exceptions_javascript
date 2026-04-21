@@ -16,23 +16,103 @@ Captures unhandled exceptions on server and browser, enriches them with request/
 ## Next.js quickstart
 
 ```bash
-npm install @oopsie-exceptions/nextjs
+npm install @oopsie-exceptions/core @oopsie-exceptions/node @oopsie-exceptions/browser @oopsie-exceptions/nextjs
+```
+
+### 1. Create two config files at your project root
+
+Modeled directly on Sentry's `sentry.{client,server}.config.ts`. The webhook URL and token are literal strings — your token is write-only at the collector, same security model as a Sentry DSN.
+
+```ts
+// oopsie.client.config.ts
+import type { ClientConfig } from "@oopsie-exceptions/core";
+import { BrowserTransport, browserServerInfo } from "@oopsie-exceptions/browser";
+
+const config: ClientConfig = {
+  appName: "my-app",
+  environment: process.env.NEXT_PUBLIC_VERCEL_ENV ?? "development",
+  webhooks: [{
+    url: "https://oopsie.example.com/api/v1/exceptions",
+    headers: { Authorization: "Bearer pk_write_only_token_abc123..." },
+  }],
+  transport: new BrowserTransport(),
+  serverInfo: browserServerInfo,
+  // Optional:
+  // ignoreErrors: ["AbortError", /NetworkError/],
+  // beforeNotify: (p) => { p.context.release = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA; return p; },
+};
+
+export default config;
 ```
 
 ```ts
-// instrumentation.ts
-export { register, onRequestError } from "@oopsie-exceptions/nextjs/instrumentation";
+// oopsie.server.config.ts
+import type { ClientConfig } from "@oopsie-exceptions/core";
+import { NodeTransport, AsyncLocalStorageContextStore, nodeServerInfo } from "@oopsie-exceptions/node";
+
+const config: ClientConfig = {
+  appName: "my-app",
+  environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "development",
+  webhooks: [{
+    url: "https://oopsie.example.com/api/v1/exceptions",
+    headers: { Authorization: `Bearer ${process.env.OOPSIE_SERVER_TOKEN}` },
+  }],
+  transport: new NodeTransport(),
+  contextStore: new AsyncLocalStorageContextStore(),
+  serverInfo: nodeServerInfo,
+};
+
+export default config;
+```
+
+### 2. Wire the server config via `instrumentation.ts`
+
+```ts
+// instrumentation.ts (project root, or src/instrumentation.ts)
+import config from "./oopsie.server.config";
+import { configureServer, onRequestError } from "@oopsie-exceptions/nextjs/instrumentation";
+
+export function register() {
+  configureServer(config);
+}
+
+export { onRequestError };
+```
+
+### 3. Mount the browser client via a `"use client"` bootstrap
+
+The config file contains class instances (`BrowserTransport`, etc.) which can't be serialized across the server→client boundary as React props. Mirror Sentry's pattern: a small `"use client"` wrapper imports the config and calls `configureClient` on mount.
+
+```tsx
+// app/oopsie-bootstrap.tsx
+"use client";
+import { configureClient } from "@oopsie-exceptions/nextjs";
+import { installGlobalHandlers } from "@oopsie-exceptions/browser";
+import { useEffect, useRef } from "react";
+import oopsieConfig from "../oopsie.client.config";
+
+export function OopsieBootstrap() {
+  const didInit = useRef(false);
+  useEffect(() => {
+    if (didInit.current) return;
+    didInit.current = true;
+    const client = configureClient(oopsieConfig);
+    const uninstall = installGlobalHandlers(client);
+    return () => { uninstall(); };
+  }, []);
+  return null;
+}
 ```
 
 ```tsx
-// app/layout.tsx
-import { OopsieClient } from "@oopsie-exceptions/nextjs/client";
+// app/layout.tsx (server component)
+import { OopsieBootstrap } from "./oopsie-bootstrap";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <body>
-        <OopsieClient />
+        <OopsieBootstrap />
         {children}
       </body>
     </html>
@@ -40,50 +120,48 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
+### 4. Add a global error UI
+
 ```tsx
 // app/global-error.tsx
 "use client";
 import { GlobalErrorReporter } from "@oopsie-exceptions/nextjs/global-error";
 
-export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
+export default function GlobalError({
+  error,
+  reset,
+}: { error: Error & { digest?: string }; reset: () => void }) {
   return <GlobalErrorReporter error={error} reset={reset} />;
 }
 ```
 
-Environment variables:
+That's it. Route Handler, Server Action, Server Component, and middleware errors are caught by `onRequestError`. Browser errors and unhandled rejections are caught by `<OopsieClient />`. Render errors show the global error UI and are reported once per error identity.
 
-```
-OOPSIE_WEBHOOK_URL=https://oopsie.example.com/api/v1/exceptions
-OOPSIE_TOKEN=...
-OOPSIE_APP_NAME=MyApp
+## Manual capture
+
+```ts
+// Server-side (Route Handler, Server Action, API, etc.):
+import { captureException } from "@oopsie-exceptions/nextjs/instrumentation";
+await captureException(err, { context: { orderId: 123 }, handled: true });
+
+// Client component:
+import { captureException } from "@oopsie-exceptions/nextjs";
+await captureException(err, { handled: true });
 ```
 
-## Direct client API (any runtime)
+For framework-agnostic use outside Next.js, construct an `OopsieClient` directly:
 
 ```ts
 import { OopsieClient } from "@oopsie-exceptions/core";
 
 const client = new OopsieClient({
   appName: "MyApp",
-  environment: process.env.NODE_ENV,
-  enabled: true,
-  webhooks: [
-    {
-      url: "https://oopsie.example.com/api/v1/exceptions",
-      headers: { Authorization: `Bearer ${process.env.OOPSIE_TOKEN}` },
-      name: "oopsie-prod",
-    },
-  ],
-  filterParameters: ["password", "secret", "token", "api_key"],
-  filterHeaders: ["authorization", "cookie", "set-cookie"],
-  ignoreErrors: ["NotFoundError", /AbortError/],
-  asyncDelivery: true,
-  beforeNotify: (payload) => payload, // return null to drop
+  environment: "production",
+  webhooks: [{ url: "https://oopsie.example.com/api/v1/exceptions",
+               headers: { Authorization: `Bearer ${process.env.OOPSIE_TOKEN}` } }],
 });
 
-client.captureException(err, { context: { orderId: 123 }, handled: true });
-client.setContext({ user: { id: 42 } });
-client.withContext({ tenantId: 7 }, async () => { /* scoped */ });
+client.captureException(err);
 ```
 
 ## Payload shape

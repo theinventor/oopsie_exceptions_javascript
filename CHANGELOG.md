@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - unreleased
+
+### Changed — BREAKING
+- **Config-file-first.** Follows the Sentry `sentry.{client,server}.config.ts` pattern. Create `oopsie.server.config.ts` + `oopsie.client.config.ts` at your project root and import them where needed. The old auto-bootstrap that read `OOPSIE_WEBHOOK_URL` / `OOPSIE_TOKEN` / `OOPSIE_APP_NAME` is gone.
+- `configureServer(config)` now requires an explicit `ClientConfig` argument.
+- Dropped the `register` export from `@oopsie-exceptions/nextjs/instrumentation`. Write your own `register()` in `instrumentation.ts` that calls `configureServer(yourConfig)`.
+- Dropped the `envConfig` export.
+
+### Migration
+Before:
+```ts
+// instrumentation.ts
+export { register, onRequestError } from "@oopsie-exceptions/nextjs/instrumentation";
+// + OOPSIE_WEBHOOK_URL / OOPSIE_TOKEN / OOPSIE_APP_NAME in .env
+```
+
+After:
+```ts
+// oopsie.server.config.ts  (at project root)
+import type { ClientConfig } from "@oopsie-exceptions/core";
+import { NodeTransport, AsyncLocalStorageContextStore, nodeServerInfo } from "@oopsie-exceptions/node";
+const config: ClientConfig = {
+  appName: "my-app",
+  environment: process.env.NODE_ENV ?? "development",
+  webhooks: [{ url: "https://collector.example.com/api/v1/exceptions",
+               headers: { Authorization: `Bearer ${process.env.OOPSIE_TOKEN}` } }],
+  transport: new NodeTransport(),
+  contextStore: new AsyncLocalStorageContextStore(),
+  serverInfo: nodeServerInfo,
+};
+export default config;
+
+// instrumentation.ts
+import config from "./oopsie.server.config";
+import { configureServer, onRequestError } from "@oopsie-exceptions/nextjs/instrumentation";
+export function register() { configureServer(config); }
+export { onRequestError };
+```
+
+See the [README](./README.md) for the full Next.js quickstart.
+
 ## [0.1.3] - unreleased
 
 Second pass at Turbopack compatibility (after 0.1.1 / 0.1.2 were both still broken).
