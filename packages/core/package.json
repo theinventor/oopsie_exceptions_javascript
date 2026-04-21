@@ -1,6 +1,6 @@
 {
   "name": "@oopsie-exceptions/core",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Runtime-agnostic core for @oopsie-exceptions: OopsieClient, payload builder, filters, transport interface.",
   "keywords": [
     "oopsie",

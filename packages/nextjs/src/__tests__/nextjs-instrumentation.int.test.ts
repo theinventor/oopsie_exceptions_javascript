@@ -7,7 +7,7 @@ import type { AddressInfo } from "node:net";
 import { NodeTransport } from "@oopsie-exceptions/node";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { onRequestError } from "../instrumentation.js";
-import { configureServer, resetForTests } from "../singleton.js";
+import { configureServer, resetForTests } from "../singleton-server.js";
 
 let server: Server;
 let port: number;

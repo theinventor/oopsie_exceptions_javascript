@@ -1,6 +1,6 @@
 import type { OopsiePayload, Transport } from "@oopsie-exceptions/core";
 import { afterEach, describe, expect, it } from "vitest";
-import { configureServer, resetForTests } from "../singleton.js";
+import { configureServer, resetForTests } from "../singleton-server.js";
 import { wrapServerAction } from "../wrap-server-action.js";
 
 const payloads: OopsiePayload[] = [];

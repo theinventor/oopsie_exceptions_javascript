@@ -6,7 +6,7 @@ import { type Server, createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { NodeTransport } from "@oopsie-exceptions/node";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { configureServer, resetForTests } from "../singleton.js";
+import { configureServer, resetForTests } from "../singleton-server.js";
 import { wrapRouteHandler } from "../wrap-route-handler.js";
 import { wrapServerAction } from "../wrap-server-action.js";
 

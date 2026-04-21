@@ -8,7 +8,7 @@ import type { AddressInfo } from "node:net";
 import { OopsieClient } from "@oopsie-exceptions/core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { AsyncLocalStorageContextStore } from "../context.js";
-import { __hostnameReadyForTests, nodeServerInfo } from "../server-info.js";
+import { nodeServerInfo } from "../server-info.js";
 import { NodeTransport } from "../transport.js";
 
 interface Received {
@@ -50,10 +50,6 @@ afterAll(async () => {
 
 describe("integration: Node client end-to-end", () => {
   it("POSTs a valid Oopsie payload to a real server", async () => {
-    // Let the lazy hostname probe resolve before asserting on it
-    await __hostnameReadyForTests();
-    await new Promise((r) => setTimeout(r, 10));
-
     received.length = 0;
     const client = new OopsieClient({
       appName: "IntegrationApp",
@@ -82,7 +78,8 @@ describe("integration: Node client end-to-end", () => {
     expect(body.notifier).toBe("OopsieExceptions");
     expect(body.error.message).toBe("real boom");
     expect(body.context).toEqual({ action: "test#integration" });
-    expect(typeof body.server.hostname).toBe("string");
+    // hostname is whatever HOSTNAME env var says — string or null.
+    expect(body.server.hostname === null || typeof body.server.hostname === "string").toBe(true);
     expect(body.server.node_version).toBe(process.version);
     expect(body.server.ruby_version).toBeNull();
   });

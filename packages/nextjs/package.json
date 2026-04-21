@@ -1,6 +1,6 @@
 {
   "name": "@oopsie-exceptions/nextjs",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Next.js App Router bindings for @oopsie-exceptions: instrumentation hooks, client component, GlobalErrorReporter, server-action and route-handler wrappers.",
   "keywords": [
     "oopsie",
@@ -56,9 +56,9 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@oopsie-exceptions/browser": "0.1.1",
-    "@oopsie-exceptions/core": "0.1.1",
-    "@oopsie-exceptions/node": "0.1.1"
+    "@oopsie-exceptions/browser": "0.1.3",
+    "@oopsie-exceptions/core": "0.1.3",
+    "@oopsie-exceptions/node": "0.1.3"
   },
   "peerDependencies": {
     "next": ">=15.0.0",

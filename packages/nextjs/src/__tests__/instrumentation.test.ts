@@ -1,7 +1,7 @@
 import type { OopsiePayload, Transport } from "@oopsie-exceptions/core";
 import { afterEach, describe, expect, it } from "vitest";
 import { onRequestError, register } from "../instrumentation.js";
-import { configureServer, resetForTests } from "../singleton.js";
+import { configureServer, resetForTests } from "../singleton-server.js";
 
 const payloads: OopsiePayload[] = [];
 const transport: Transport = {

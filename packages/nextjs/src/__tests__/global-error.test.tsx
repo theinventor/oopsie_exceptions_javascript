@@ -7,7 +7,7 @@ import type { OopsiePayload, Transport } from "@oopsie-exceptions/core";
 import { render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { GlobalErrorReporter } from "../global-error.js";
-import { configureClient, resetForTests } from "../singleton.js";
+import { configureClient, resetClientSideForTests as resetForTests } from "../singleton.js";
 
 const payloads: OopsiePayload[] = [];
 const transport: Transport = {

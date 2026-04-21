@@ -1,45 +1,43 @@
 import type { OopsieServerInfo } from "@oopsie-exceptions/core";
 
 /**
- * Edge-runtime safety: importing `node:os` at the top level breaks
- * Next.js Edge-runtime compilation (instrumentation.ts is built for
- * BOTH runtimes). Resolve it lazily through a runtime-computed
- * specifier so bundlers can't follow the import statically; the
- * Edge bundle omits node:os entirely and hostname gracefully
- * degrades to null.
+ * Resolve hostname without referencing `node:os` anywhere in the
+ * module graph — even as a dynamic/eval'd import, Turbopack and
+ * friends reject it.
+ *
+ * In practice the HOSTNAME env var is set on virtually every real
+ * deployment target:
+ *   - Docker, Kubernetes, Fly.io, Railway, Render — set by the runtime
+ *   - Vercel — `process.env.HOSTNAME` populated for serverless/edge
+ *   - Linux shells — `$HOSTNAME` is exported by bash/zsh
+ *   - Local dev on macOS without explicit env — null, which is fine;
+ *     the error report still has pid + node_version + app + context
+ *
+ * If you need a guaranteed real hostname, supply your own serverInfo:
+ *
+ *   import { hostname } from "node:os"; // only safe in pure-Node apps
+ *   new OopsieClient({ serverInfo: () => ({ hostname: hostname(), ... }) })
  */
-let cachedHostname: string | null | undefined;
-let hostnameProbeStarted = false;
-
-function probeHostname(): void {
-  if (hostnameProbeStarted) return;
-  hostnameProbeStarted = true;
-  // Hide spec from static analysis — webpack/turbopack can't follow
-  // dynamic imports where the spec is computed at runtime.
-  const spec = ["node", "os"].join(":");
-  import(/* @vite-ignore */ spec)
-    .then((os: { hostname: () => string }) => {
-      cachedHostname = os.hostname();
-    })
-    .catch(() => {
-      cachedHostname = null;
-    });
+function resolveHostname(): string | null {
+  if (typeof process !== "undefined" && typeof process.env?.HOSTNAME === "string") {
+    return process.env.HOSTNAME;
+  }
+  return null;
 }
 
+let cachedHostname: string | null | undefined;
+
 export function nodeServerInfo(): OopsieServerInfo {
-  probeHostname();
+  if (cachedHostname === undefined) cachedHostname = resolveHostname();
   return {
-    hostname: cachedHostname ?? null,
+    hostname: cachedHostname,
     pid: typeof process !== "undefined" ? process.pid : null,
     ruby_version: null,
     node_version: typeof process !== "undefined" ? process.version : null,
   };
 }
 
-/** Test helper — resolves once the first hostname probe completes. */
-export async function __hostnameReadyForTests(): Promise<void> {
-  probeHostname();
-  // Let the microtask queue drain
-  await Promise.resolve();
-  await Promise.resolve();
+/** Test helper — clears the memoized hostname. */
+export function __resetHostnameCacheForTests(): void {
+  cachedHostname = undefined;
 }

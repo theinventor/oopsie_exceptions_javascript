@@ -3,7 +3,7 @@ import { OopsieClient as CoreClient } from "@oopsie-exceptions/core";
 import { render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { OopsieClient } from "../client.js";
-import { getClientSideClient, resetForTests } from "../singleton.js";
+import { getClientSideClient, resetClientSideForTests as resetForTests } from "../singleton.js";
 
 afterEach(() => {
   resetForTests();

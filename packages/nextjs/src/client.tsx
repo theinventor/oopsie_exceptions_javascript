@@ -7,6 +7,7 @@ import {
 } from "@oopsie-exceptions/browser";
 import { type ClientConfig, OopsieClient as CoreOopsieClient } from "@oopsie-exceptions/core";
 import { useEffect } from "react";
+import { PKG_VERSION } from "./pkg-version.js";
 import { configureClient } from "./singleton.js";
 
 export interface OopsieClientProps {
@@ -45,6 +46,7 @@ export function OopsieClient({ config = {} }: OopsieClientProps): null {
       ],
       transport: rest.transport ?? new BrowserTransport(),
       serverInfo: rest.serverInfo ?? browserServerInfo,
+      packageVersion: rest.packageVersion ?? PKG_VERSION,
       ...rest,
     };
 

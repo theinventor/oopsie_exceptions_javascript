@@ -1,4 +1,18 @@
-import { configureServer, getServerClient } from "./singleton.js";
+import type { CaptureOptions } from "@oopsie-exceptions/core";
+import { configureServer, getServerClient } from "./singleton-server.js";
+
+export { configureServer, getServerClient, envConfig } from "./singleton-server.js";
+
+/**
+ * Server-side manual capture. For client components import
+ * `captureException` from `@oopsie-exceptions/nextjs` instead — that
+ * one is browser-safe and won't pull node:* into your client bundle.
+ */
+export async function captureException(error: unknown, opts: CaptureOptions = {}): Promise<void> {
+  const client = getServerClient();
+  if (!client) return;
+  return client.captureException(error, opts);
+}
 
 /**
  * Re-export with the exact names Next.js 15 expects when a user writes:

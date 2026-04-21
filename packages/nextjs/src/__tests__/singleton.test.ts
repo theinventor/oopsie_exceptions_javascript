@@ -1,17 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  configureClient,
   configureServer,
   envConfig,
-  getClientSideClient,
   getServerClient,
-  resetForTests,
-} from "../singleton.js";
+  resetServerForTests,
+} from "../singleton-server.js";
+import { configureClient, getClientSideClient, resetClientSideForTests } from "../singleton.js";
 
 const originalEnv = { ...process.env };
 
 afterEach(() => {
-  resetForTests();
+  resetClientSideForTests();
+  resetServerForTests();
   process.env = { ...originalEnv };
 });
 

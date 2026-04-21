@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - unreleased
+
+Second pass at Turbopack compatibility (after 0.1.1 / 0.1.2 were both still broken).
+
+### Fixed
+- **`@oopsie-exceptions/node/server-info`**: removed `node:os` dependency entirely. The v0.1.1 computed `import(spec)` fix didn't hide from Turbopack — it errored with `Module not found: Can't resolve <dynamic>`. The `Function('return require')` fallback didn't work in ESM Node (no `require` in scope). Hostname now comes exclusively from `process.env.HOSTNAME`, which is set on Docker, Kubernetes, Fly.io, Railway, Render, Vercel, and every major Linux shell. Local dev without the env var gets `hostname: null` (the rest of the payload is unaffected). Users wanting a guaranteed real hostname can supply their own `serverInfo` that imports `node:os` directly from a pure-Node app context.
+- **`@oopsie-exceptions/nextjs/wrap-server-action` + `/wrap-route-handler`**: now call `getServerClient` directly instead of going through the universal `captureException`. Turbopack was eagerly tracing the `await import("./singleton-server.js")` inside capture-exception and pulling the entire Node-runtime module graph (including `node:async_hooks`) into the client bundle, erroring with `the chunking context does not support external modules (request: node:async_hooks)`. Wrappers only ever execute on the server, so the direct-import version is equivalent behaviour with no browser-bundle bleed.
+- **`@oopsie-exceptions/nextjs` main entry `captureException`**: now browser-only (no-op on the server). For server-side manual capture, import `captureException` from `@oopsie-exceptions/nextjs/instrumentation` instead. Keeps the main entry free of any Node-runtime references so client components can safely import wrappers + types.
+
+### Added
+- `captureException` export on `@oopsie-exceptions/nextjs/instrumentation` for explicit server-side manual capture.
+
+## [0.1.2] - unreleased
+
+### Fixed
+- **Turbopack browser-bundle error** in `@oopsie-exceptions/nextjs`. The `<OopsieClient />` React component imported `configureClient` from `singleton.ts`, which in turn imported from `@oopsie-exceptions/node`, which references `node:async_hooks`. Turbopack can't bundle `node:*` modules for the browser runtime — build failed with `the chunking context does not support external modules (request: node:async_hooks)`.
+- Split `singleton.ts` (browser-safe; `configureClient` / `getClientSideClient` only) from a new `singleton-server.ts` (server-only; `configureServer` / `getServerClient` / `envConfig` with `@oopsie-exceptions/node` imports). `capture-exception.ts` now dynamically imports the server singleton only inside the `typeof window === "undefined"` branch.
+- Moved `configureServer` / `getServerClient` / `envConfig` re-exports from the main `@oopsie-exceptions/nextjs` entry to `@oopsie-exceptions/nextjs/instrumentation`. Main entry is now fully browser-safe.
+
+### Changed
+- Test helper renamed: `resetForTests` split into `resetClientSideForTests` (`singleton.js`) and `resetServerForTests` (`singleton-server.js`). The old `resetForTests` name remains re-exported from `singleton-server.js` as a back-compat alias.
+
 ## [0.1.1] - unreleased
 
 ### Fixed

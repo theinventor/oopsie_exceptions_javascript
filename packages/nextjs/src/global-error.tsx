@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef } from "react";
-import { captureException } from "./capture-exception.js";
+import { getClientSideClient } from "./singleton.js";
 
 export interface GlobalErrorReporterProps {
   error: Error & { digest?: string };
@@ -25,7 +25,13 @@ export function GlobalErrorReporter({
   useEffect(() => {
     if (reportedRef.current === error) return;
     reportedRef.current = error;
-    void captureException(error, {
+    // Global error UI is always client-side — route to the browser
+    // singleton directly rather than via the universal
+    // `captureException`, which would pull the server-side singleton
+    // into the client bundle via its dynamic import.
+    const client = getClientSideClient();
+    if (!client) return;
+    void client.captureException(error, {
       handled: false,
       context: error.digest ? { next: { digest: error.digest } } : {},
     });
