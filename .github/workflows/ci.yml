@@ -26,11 +26,15 @@ jobs:
 
       - run: npm run lint
 
+      # Build must run before typecheck — per-package tsconfigs use the
+      # published `exports` map from sibling packages (dist/esm/*.d.ts),
+      # so those files have to exist before tsc can resolve cross-package
+      # types like @oopsie-exceptions/core from @oopsie-exceptions/node.
+      - run: npm run build
+
       - run: npm run typecheck
 
       - run: npm run test -- --coverage
-
-      - run: npm run build
 
       - name: pack dry-run
         run: |
