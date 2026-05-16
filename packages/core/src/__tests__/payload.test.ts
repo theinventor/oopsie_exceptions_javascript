@@ -49,6 +49,22 @@ describe("buildPayload", () => {
     expect(typeof p.server.node_version).toBe("string");
   });
 
+  it("preserves node_version from serverInfo when provided", () => {
+    const config = normalizeConfig({
+      appName: "a",
+      environment: "e",
+      webhooks: [{ url: "https://x.com" }],
+      serverInfo: () => ({
+        hostname: null,
+        pid: null,
+        ruby_version: null,
+        node_version: "edge-runtime",
+      }),
+    });
+    const p = buildPayload(new Error("x"), config);
+    expect(p.server.node_version).toBe("edge-runtime");
+  });
+
   it("error.handled defaults to false", () => {
     const p = buildPayload(new Error("x"), cfg());
     expect(p.error.handled).toBe(false);
@@ -118,5 +134,17 @@ describe("buildPayload", () => {
 
     const p2 = buildPayload({ message: "obj" }, cfg());
     expect(p2.error.message).toBe("obj");
+  });
+
+  it("handles inputs that cannot be stringified", () => {
+    const p = buildPayload(
+      {
+        toString() {
+          throw new Error("no stringify");
+        },
+      },
+      cfg(),
+    );
+    expect(p.error.message).toBe("<unprintable error>");
   });
 });

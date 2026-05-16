@@ -56,6 +56,13 @@ describe("normalizeConfig", () => {
     ).toThrow(/webhooks\[0\].url/);
   });
 
+  it("throws when a webhook entry is not an object", () => {
+    expect(() =>
+      // @ts-expect-error deliberately wrong
+      normalizeConfig({ ...baseConfig, webhooks: [null] }),
+    ).toThrow(/webhooks\[0\]/);
+  });
+
   it("throws when config is not an object", () => {
     // @ts-expect-error deliberately wrong
     expect(() => normalizeConfig(null)).toThrow(/config/);

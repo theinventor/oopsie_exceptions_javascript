@@ -16,6 +16,19 @@ describe("browserServerInfo", () => {
     expect(viewport?.width).toBeGreaterThan(0);
     expect(viewport?.height).toBeGreaterThan(0);
   });
+
+  it("returns null userAgent when navigator is unavailable", () => {
+    const originalNavigator = Object.getOwnPropertyDescriptor(globalThis, "navigator");
+    Object.defineProperty(globalThis, "navigator", {
+      configurable: true,
+      value: undefined,
+    });
+    try {
+      expect(browserServerInfo().user_agent).toBeNull();
+    } finally {
+      if (originalNavigator) Object.defineProperty(globalThis, "navigator", originalNavigator);
+    }
+  });
 });
 
 describe("browserServerInfo SSR safety", () => {
