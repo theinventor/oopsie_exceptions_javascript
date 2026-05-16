@@ -56,6 +56,23 @@ describe("OopsieClient.captureException", () => {
     resolveDelivery?.();
   });
 
+  it("logs async delivery failures", async () => {
+    const failure = new Error("network down");
+    const transport: Transport = {
+      send: async () => {
+        throw failure;
+      },
+    };
+    const logger = {
+      warn: vi.fn(),
+      error: vi.fn(),
+    };
+    const client = new OopsieClient(baseConfig({ transport, asyncDelivery: true, logger }));
+    await client.captureException(new Error("x"));
+    await Promise.resolve();
+    expect(logger.error).toHaveBeenCalledWith("delivery to x failed", failure);
+  });
+
   it("is a no-op when enabled: false", async () => {
     const { transport, calls } = makeRecordingTransport();
     const client = new OopsieClient(baseConfig({ transport, enabled: false }));
@@ -84,6 +101,15 @@ describe("OopsieClient.captureException", () => {
     expect(calls[0]?.payload.error.message).toBe("boom");
   });
 
+  it("can ignore non-Error objects by regex-matching their message", async () => {
+    const { transport, calls } = makeRecordingTransport();
+    const client = new OopsieClient(baseConfig({ transport, ignoreErrors: [/42/] }));
+    await client.captureException({ name: "ObjectError", message: 42 });
+    await client.captureException({ name: "ObjectError", message: "real" });
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.payload.error.message).toBe("real");
+  });
+
   it("drops errors whose matcher function returns true", async () => {
     const { transport, calls } = makeRecordingTransport();
     const client = new OopsieClient(
@@ -93,6 +119,22 @@ describe("OopsieClient.captureException", () => {
       }),
     );
     await client.captureException(new Error("ignore: noisy"));
+    await client.captureException(new Error("real"));
+    expect(calls).toHaveLength(1);
+  });
+
+  it("ignores matcher function failures and still sends", async () => {
+    const { transport, calls } = makeRecordingTransport();
+    const client = new OopsieClient(
+      baseConfig({
+        transport,
+        ignoreErrors: [
+          () => {
+            throw new Error("matcher failed");
+          },
+        ],
+      }),
+    );
     await client.captureException(new Error("real"));
     expect(calls).toHaveLength(1);
   });

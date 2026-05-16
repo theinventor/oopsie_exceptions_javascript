@@ -62,7 +62,7 @@ export function installGlobalHandlers(client: OopsieClient): () => void {
   const onRejection = (event: PromiseRejectionEvent) => {
     const reason = event.reason;
     const err = reason instanceof Error ? reason : new Error(String(reason));
-    const key = dedupeKey(err);
+    const key = dedupeKey(reason);
     if (isDuplicate(key)) return;
     void client.captureException(err, { handled: false });
   };

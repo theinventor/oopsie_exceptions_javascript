@@ -56,6 +56,28 @@ describe("BrowserTransport", () => {
     );
   });
 
+  it("uses the webhook URL in errors when no webhook name is set", async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(new Response("bad", { status: 503 }));
+    const t = new BrowserTransport({ fetchImpl });
+    await expect(t.send({ url: "/x" }, payload(), { timeoutMs: 5000 })).rejects.toThrow(
+      /webhook \/x responded 503/,
+    );
+  });
+
+  it("sends without an AbortSignal when AbortController is unavailable", async () => {
+    const original = globalThis.AbortController;
+    // @ts-expect-error deliberately simulate old browser runtime
+    globalThis.AbortController = undefined;
+    try {
+      const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(okResponse());
+      const t = new BrowserTransport({ fetchImpl });
+      await t.send({ url: "/x" }, payload(), { timeoutMs: 5000 });
+      expect(fetchImpl.mock.calls[0]?.[1]?.signal).toBeUndefined();
+    } finally {
+      globalThis.AbortController = original;
+    }
+  });
+
   it("throws if global fetch is unavailable", async () => {
     const original = globalThis.fetch;
     // @ts-expect-error temp
